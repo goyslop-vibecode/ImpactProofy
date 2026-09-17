@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ImpactProofy — Смотри не на код, а на его последствия</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Vue 3 CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#0F172A',
+              card: '#131D31',
+              border: '#1E293B',
+              indigo: '#6366F1',
+              mint: '#10B981',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0F172A;
+      color: #F8FAFC;
+    }
+    .grid-pattern {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+    .glow-indigo {
+      box-shadow: 0 0 60px -15px rgba(99, 102, 241, 0.25);
+    }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen grid-pattern selection:bg-brand-indigo selection:text-white">
+  <div id="app">
+    <!-- Navbar -->
+    <header class="border-b border-brand-border/80 sticky top-0 z-50 backdrop-blur-md bg-brand-bg/85">
+      <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-3 group">
+          <!-- Vector Icon / Fallback -->
+          <div class="w-8 h-8 rounded-lg bg-brand-card border border-brand-border flex items-center justify-center p-1.5 transition group-hover:border-brand-indigo">
+            <svg viewBox="0 0 40 40" class="w-full h-full stroke-current" fill="none">
+              <polygon points="20,4 4,34 36,34" stroke="#6366F1" stroke-width="3" stroke-linejoin="round"/>
+              <line x1="20" y1="4" x2="20" y2="23" stroke="#10B981" stroke-width="2"/>
+              <line x1="4" y1="34" x2="20" y2="23" stroke="#10B981" stroke-width="2"/>
+              <line x1="36" y1="34" x2="20" y2="23" stroke="#10B981" stroke-width="2"/>
+              <circle cx="20" cy="23" r="3.5" fill="#10B981"/>
+            </svg>
+          </div>
+          <span class="font-bold text-lg tracking-tight">Impact<span class="text-brand-mint">Proofy</span></span>
+        </a>
+
+        <!-- Links -->
+        <nav class="hidden md:flex items-center gap-8 text-sm text-slate-400">
+          <a href="#pipeline" class="hover:text-white transition">Пайплайн</a>
+          <a href="#demo" class="hover:text-white transition">Симулятор</a>
+          <a href="#features" class="hover:text-white transition">Возможности</a>
+          <a href="#specs" class="hover:text-white transition">Спецификация</a>
+        </nav>
+
+        <!-- CTA Action -->
+        <div class="flex items-center gap-3">
+          <a href="https://github.com" target="_blank" class="text-xs font-mono px-3.5 py-1.5 rounded-md bg-brand-card border border-brand-border text-slate-300 hover:text-white hover:border-slate-600 transition flex items-center gap-2">
+            <span>GitHub Action</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-mint"></span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="max-w-6xl mx-auto px-6 pt-20 pb-16 text-center md:text-left md:flex items-center justify-between gap-12">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-indigo/10 border border-brand-indigo/30 text-brand-indigo text-xs font-mono mb-6">
+          <span class="w-2 h-2 rounded-full bg-brand-indigo animate-pulse"></span>
+          <span>Zero-Breaking PR Verification for Dev & AI</span>
+        </div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6">
+          Смотри не на код,<br>а на его <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-indigo via-indigo-400 to-brand-mint">последствия.</span>
+        </h1>
+        <p class="text-lg text-slate-400 leading-relaxed mb-8 max-w-xl">
+          ImpactProofy строит архитектурный граф изменений Pull Request'а, изолированно проверяет смежные сервисы в песочнице и предоставляет доказательную карту влияния (evidence) до нажатия кнопки Merge.
+        </p>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+          <a href="#demo" class="w-full sm:w-auto px-6 py-3 rounded-lg bg-brand-indigo hover:bg-indigo-500 font-medium text-sm transition shadow-lg shadow-brand-indigo/25 flex items-center justify-center gap-2">
+            <span>Попробовать симулятор</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+          <div class="w-full sm:w-auto px-4 py-3 rounded-lg bg-brand-card border border-brand-border font-mono text-xs text-slate-300 flex items-center justify-between gap-3">
+            <span class="text-slate-500">$</span>
+            <code>npm i -g @impactproofy/cli</code>
+            <button @click="copyCommand" class="text-brand-indigo hover:text-indigo-400 text-xs font-sans">
+              {{ copied ? 'Скопировано!' : 'Копировать' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual / Badge -->
+      <div class="mt-12 md:mt-0 flex-1 max-w-md w-full">
+        <div class="rounded-xl bg-brand-card border border-brand-border p-5 shadow-2xl glow-indigo">
+          <div class="flex items-center justify-between border-b border-brand-border pb-3 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-brand-mint/80"></span>
+            </div>
+            <span class="text-xs font-mono text-slate-400">PR #482 — Impact Audit</span>
+          </div>
+
+          <div class="space-y-3 font-mono text-xs">
+            <div class="flex items-center justify-between text-slate-400">
+              <span>Source:</span>
+              <span class="text-slate-200">AI-Agent (Claude-Coder)</span>
+            </div>
+            <div class="flex items-center justify-between text-slate-400">
+              <span>Lines Changed:</span>
+              <span class="text-slate-200">+142 / -18 (Syntactically valid)</span>
+            </div>
+            <div class="p-3 rounded-lg bg-[#0A0E17] border border-brand-border space-y-1.5">
+              <div class="text-brand-indigo font-semibold">▶ System Topology Impact:</div>
+              <div class="text-slate-300">↳ 14 downstream microservices scanned</div>
+              <div class="text-amber-400">⚠ BillingService: AuthContext scope modified</div>
+              <div class="text-brand-mint">✔ Sandbox Replay: 42/42 integration contracts verified</div>
+            </div>
+            <div class="pt-2 flex items-center justify-between border-t border-brand-border text-xs">
+              <span class="text-slate-400">Verdict:</span>
+              <span class="px-2 py-0.5 rounded bg-brand-mint/15 text-brand-mint font-semibold">EVIDENCE ATTACHED • MERGE READY</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pipeline / Flow Section -->
+    <section id="pipeline" class="border-t border-brand-border/60 py-20 bg-[#0B0F19]">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <h2 class="text-xs font-mono uppercase tracking-widest text-brand-indigo mb-3">Архитектурный пайплайн</h2>
+          <p class="text-3xl font-bold tracking-tight">От локального коммита до полной уверенности</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div v-for="(step, i) in pipelineSteps" :key="i" class="p-5 rounded-xl bg-brand-card border border-brand-border hover:border-brand-indigo/50 transition">
+            <div class="w-8 h-8 rounded-lg bg-brand-indigo/15 text-brand-indigo font-mono font-bold flex items-center justify-center text-sm mb-4">
+              0{{ i + 1 }}
+            </div>
+            <h3 class="font-semibold text-base mb-2 text-white">{{ step.title }}</h3>
+            <p class="text-sm text-slate-400 leading-relaxed">{{ step.desc }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Simulator / Sandbox Demo (Vue Reactive) -->
+    <section id="demo" class="border-t border-brand-border/60 py-20">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+          <div>
+            <span class="text-xs font-mono uppercase tracking-widest text-brand-mint mb-2 block">Live Demo Simulator</span>
+            <h2 class="text-3xl font-bold tracking-tight">Проверь PR прямо сейчас</h2>
+          </div>
+          <p class="text-sm text-slate-400 max-w-md">
+            Переключай сценарии изменений и наблюдай, как ImpactProofy локализует скрытые последствия.
+          </p>
+        </div>
+
+        <!-- Simulator Interface -->
+        <div class="rounded-xl bg-brand-card border border-brand-border overflow-hidden shadow-xl">
+          <!-- Top Tabs -->
+          <div class="flex border-b border-brand-border bg-[#0C121E] px-4 pt-3 gap-2 overflow-x-auto">
+            <button 
+              v-for="(scenario, index) in scenarios" 
+              :key="index"
+              @click="activeScenario = index"
+              :class="activeScenario === index ? 'bg-brand-card border-brand-border text-white border-t border-x -mb-[1px] font-medium' : 'text-slate-400 hover:text-slate-200'"
+              class="px-4 py-2.5 rounded-t-lg text-xs font-mono transition flex items-center gap-2 whitespace-nowrap"
+            >
+              <span class="w-2 h-2 rounded-full" :class="scenario.type === 'danger' ? 'bg-amber-400' : 'bg-brand-mint'"></span>
+              {{ scenario.name }}
+            </button>
+          </div>
+
+          <!-- Sandbox Content -->
+          <div class="p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Left: Diff summary -->
+            <div class="lg:col-span-5 space-y-4">
+              <div class="text-xs font-semibold uppercase tracking-wider text-slate-400 font-mono">Изменение кода (PR)</div>
+              <div class="p-4 rounded-lg bg-[#090D16] border border-brand-border font-mono text-xs leading-relaxed text-slate-300">
+                <div class="text-slate-500 mb-2">// {{ currentScenario.author }}</div>
+                <div class="text-slate-400">{{ currentScenario.codePreview }}</div>
+              </div>
+              <div class="text-xs text-slate-400">
+                <span class="text-white font-medium">Стандартный Code Review:</span> «Синтаксис корректен, тесты юнитов пройдены».
+              </div>
+            </div>
+
+            <!-- Right: ImpactProofy Real Analysis -->
+            <div class="lg:col-span-7 space-y-4">
+              <div class="text-xs font-semibold uppercase tracking-wider text-brand-indigo font-mono flex items-center justify-between">
+                <span>Анализ ImpactProofy (Граф и Песочница)</span>
+                <span class="text-brand-mint">Realtime Evidence</span>
+              </div>
+
+              <div class="p-4 rounded-lg bg-[#090D16] border border-brand-border font-mono text-xs space-y-3">
+                <div class="flex items-center justify-between text-slate-400 pb-2 border-b border-brand-border/60">
+                  <span>Затронутые сервисы:</span>
+                  <span class="text-white">{{ currentScenario.impactedNodes.length }} узла топологии</span>
+                </div>
+
+                <div class="space-y-1.5">
+                  <div v-for="(node, nIdx) in currentScenario.impactedNodes" :key="nIdx" class="flex items-center justify-between text-xs">
+                    <span class="text-slate-300">↳ {{ node.name }}</span>
+                    <span :class="node.statusColor">{{ node.status }}</span>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded bg-brand-card/70 border border-brand-border text-slate-300 space-y-1">
+                  <div class="font-bold text-white text-xs">Доказательство песочницы (Evidence):</div>
+                  <div class="text-[11px] text-slate-400">{{ currentScenario.evidenceDetail }}</div>
+                </div>
+
+                <div class="pt-2 flex items-center justify-between">
+                  <span class="text-slate-400">Рекомендация:</span>
+                  <span class="px-2.5 py-1 rounded text-xs font-bold" :class="currentScenario.verdictBadge">
+                    {{ currentScenario.verdict }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Comparison / UVP -->
+    <section id="features" class="border-t border-brand-border/60 py-20 bg-[#0B0F19]">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="max-w-3xl mb-12">
+          <span class="text-xs font-mono uppercase tracking-widest text-brand-indigo mb-2 block">В чем разница</span>
+          <h2 class="text-3xl font-bold tracking-tight mb-4">Почему классических линтеров и SonarQube больше недостаточно?</h2>
+          <p class="text-slate-400 text-sm">
+            Особенно при лавинообразном росте кода от ИИ-агентов. Ошибки смещаются с уровня синтаксиса на уровень системных взаимодействий.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Traditional -->
+          <div class="p-6 rounded-xl bg-brand-card/40 border border-brand-border">
+            <div class="text-rose-400 font-mono text-xs font-semibold uppercase tracking-wider mb-2">Классический подход (Diff Review)</div>
+            <h3 class="text-lg font-bold text-white mb-4">«Что написано в этих 20 строках?»</h3>
+            <ul class="space-y-3 text-sm text-slate-400">
+              <li class="flex items-start gap-2">
+                <span class="text-rose-500">✕</span>
+                <span>Проверяет только измененные строки файла в изоляции.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-rose-500">✕</span>
+                <span>Не видит скрытых сайд-эффектов на удаленные микросервисы.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-rose-500">✕</span>
+                <span>AI-код успешно проходит ревью, ломая продакшен на этапе рантайма.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- ImpactProofy -->
+          <div class="p-6 rounded-xl bg-brand-card border border-brand-indigo/40 relative">
+            <div class="absolute -top-3 right-6 px-2.5 py-0.5 rounded-full bg-brand-mint/20 border border-brand-mint/40 text-brand-mint font-mono text-[11px]">
+              Новая парадигма
+            </div>
+            <div class="text-brand-mint font-mono text-xs font-semibold uppercase tracking-wider mb-2">ImpactProofy (Evidence-Based)</div>
+            <h3 class="text-lg font-bold text-white mb-4">«Что изменится во всей системе?»</h3>
+            <ul class="space-y-3 text-sm text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-brand-mint">✓</span>
+                <span>Сканирует граф архитектурных зависимостей проекта.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-mint">✓</span>
+                <span>Запускает изменение в изолированной песочнице и тестирует смежные контракты.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-mint">✓</span>
+                <span>Предоставляет разработчикам верифицированные доказательства (evidence) до мерджа.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-brand-border py-10 text-center text-xs text-slate-500 font-mono">
+      <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>ImpactProofy © 2026. «Смотри не на код, а на его последствия.»</div>
+        <div class="flex items-center gap-6">
+          <span>Palette: #0F172A • #6366F1 • #10B981</span>
+          <span>Inter + JetBrains Mono</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const { createApp, ref, computed } = Vue;
+
+    createApp({
+      setup() {
+        const copied = ref(false);
+        const activeScenario = ref(0);
+
+        const copyCommand = () => {
+          navigator.clipboard.writeText('npm i -g @impactproofy/cli');
+          copied.value = true;
+          setTimeout(() => { copied.value = false; }, 2000);
+        };
+
+        const pipelineSteps = [
+          {
+            title: 'Инспекция PR',
+            desc: 'Анализ входящих изменений от разработчика или автономного AI-агента.'
+          },
+          {
+            title: 'Граф зависимостей',
+            desc: 'Построение топологии связей: API, миграции БД, очереди и права доступа.'
+          },
+          {
+            title: 'Песочница (Sandbox)',
+            desc: 'Изолированный запуск смежных сервисов для симуляции реального воздействия.'
+          },
+          {
+            title: 'Evidence & Merge',
+            desc: 'Выдача проверяемой карты доказательств безопасности в GitHub PR.'
+          }
+        ];
+
+        const scenarios = [
+          {
+            name: 'PR #104: AI Refactoring (Опасный сайд-эффект)',
+            type: 'danger',
+            author: 'AI-agent: "Refactor UserDTO to generic record"',
+            codePreview: `export interface UserDTO {\n- id: string; role: Role;\n+ id: string; meta: Record<string, unknown>;\n}`,
+            impactedNodes: [
+              { name: 'auth-service', status: '⚠ Token parser mismatch', statusColor: 'text-amber-400' },
+              { name: 'billing-api', status: '✕ RBAC permission dropped', statusColor: 'text-rose-400' },
+              { name: 'analytics-worker', status: '✔ Compatible schema', statusColor: 'text-brand-mint' }
+            ],
+            evidenceDetail: 'Песочница выявила 500 Internal Server Error при валидации прав администратора в billing-api.',
+            verdict: 'BLOCKED: PERMISSION LEAK DETECTED',
+            verdictBadge: 'bg-rose-500/20 text-rose-400 border border-rose-500/40'
+          },
+          {
+            name: 'PR #105: Безопасное изменение схемы',
+            type: 'safe',
+            author: 'Developer: "Add optional telemetry tags to event bus"',
+            codePreview: `+ tags?: Array<{ key: string; value: string }>;\n  timestamp: number;`,
+            impactedNodes: [
+              { name: 'event-broker', status: '✔ Backward compatible', statusColor: 'text-brand-mint' },
+              { name: 'logging-sink', status: '✔ Consumed gracefully', statusColor: 'text-brand-mint' }
+            ],
+            evidenceDetail: '18/18 интеграционных сценариев успешно выполнены в песочнице без деградации.',
+            verdict: 'VERIFIED: SAFE TO MERGE',
+            verdictBadge: 'bg-brand-mint/20 text-brand-mint border border-brand-mint/40'
+          }
+        ];
+
+        const currentScenario = computed(() => scenarios[activeScenario.value]);
+
+        return {
+          copied,
+          copyCommand,
+          pipelineSteps,
+          scenarios,
+          activeScenario,
+          currentScenario
+        };
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
