@@ -25,9 +25,9 @@
 
 ---
 
-## 5. Концепция логотипа:
+## 3. Концепция логотипа:
 ![ImpactProofy](./files/logo.svg)
 
-## 6. Brand Board (Цветовая палитра и примеры применения):
+## 4. Brand Board (Цветовая палитра и примеры применения):
 ![ImpactProofy](./files/impacproofy-branding.svg)
 
